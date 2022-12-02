@@ -1,6 +1,6 @@
 import html from "html-literal";
-
-<footer>
-&copy; 2020 <a href="https://savvycoders.com/">Savvy Coders</a>
-        &copy; 
-        </footer>
+export default () => html`
+  <footer>
+    &copy; 2020 <a href="https://savvycoders.com/">Savvy Coders</a>
+  </footer>
+`;
