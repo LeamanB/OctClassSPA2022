@@ -18,11 +18,12 @@ function render(state = store.Home) {
   `;
   router.updatePageLinks();
 }
-
-// add menu toggle to bars icon in nav bar
-// document.querySelector(".fa-bars").addEventListener("click", () => {
-//   document.querySelector("nav > ul").classList.toggle("hidden--mobile");
-// });
+function afterRender() {
+  // add menu toggle to bars icon in nav bar
+  document.querySelector(".fa-bars").addEventListener("click", () => {
+    document.querySelector("nav > ul").classList.toggle("hidden--mobile");
+  });
+}
 
 router.hooks({
   before: (done, params) => {
@@ -39,6 +40,7 @@ router.hooks({
           .then(response => {
             const kelvinToFahrenheit = kelvinTemp =>
               Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+
             store.Home.weather = {};
             store.Home.weather.city = response.data.name;
             store.Home.weather.temp = kelvinToFahrenheit(
@@ -51,6 +53,21 @@ router.hooks({
             done();
           })
           .catch(err => console.log(err));
+        break;
+      // New Case for Pizza View
+      case "Pizza":
+        // New Axios get request utilizing already made environment variable
+        axios
+          .get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`)
+          .then(response => {
+            // Storing retrieved data in state
+            store.Pizza.pizzas = response.data;
+            done();
+          })
+          .catch(error => {
+            console.log("It puked", error);
+            done();
+          });
         break;
       default:
         done();
